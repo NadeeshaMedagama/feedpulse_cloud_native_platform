@@ -1,0 +1,79 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - '3060:3060'
+    environment:
+      - PORT=3060
+      - BACKEND_INTERNAL_URL=http://api-gateway:8080
+    depends_on:
+      - api-gateway
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      - GATEWAY_PORT=8080
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - FEEDBACK_SERVICE_URL=http://feedback-service:8082
+    depends_on:
+      - auth-service
+      - feedback-service
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    environment:
+      - AUTH_SERVICE_PORT=8081
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    ports:
+      - '8081:8081'
+
+  feedback-service:
+    build:
+      context: .
+      dockerfile: services/feedback-service/Dockerfile
+    environment:
+      - FEEDBACK_SERVICE_PORT=8082
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - MONGO_URI=${MONGO_URI:-mongodb://mongo:27017}
+      - MONGO_DATABASE=${MONGO_DATABASE:-feedpulse}
+      - AI_SERVICE_URL=http://ai-service:8083
+    depends_on:
+      - ai-service
+      - mongo
+    ports:
+      - '8082:8082'
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: services/ai-service/Dockerfile
+    environment:
+      - AI_SERVICE_PORT=8083
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    ports:
+      - '8083:8083'
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
+
