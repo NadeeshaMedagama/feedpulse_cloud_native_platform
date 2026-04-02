@@ -1,0 +1,27 @@
+name: Publish Marketplace Action
+
+on:
+  push:
+    tags:
+      - "action-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate action metadata exists
+        run: test -f action.yml
+
+      - name: Show publication guidance
+        run: |
+          echo "GitHub Marketplace publication is controlled in repository settings."
+          echo "This workflow validates action metadata on tag push (action-v*)."
+          echo "If this repository is not listed yet, complete first-time listing manually."
+
