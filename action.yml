@@ -1,0 +1,52 @@
+name: "FeedPulse Monorepo Checks"
+description: "Composite action to run backend and frontend checks in one step"
+author: "FeedPulse"
+
+inputs:
+  run-go-tests:
+    description: "Run go test ./..."
+    required: false
+    default: "true"
+  run-frontend-tests:
+    description: "Run frontend npm test"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Go
+      if: inputs.run-go-tests == 'true'
+      uses: actions/setup-go@v5
+      with:
+        go-version: "1.22"
+
+    - name: Run Go tests
+      if: inputs.run-go-tests == 'true'
+      shell: bash
+      run: go test ./...
+
+    - name: Setup Node
+      if: inputs.run-frontend-tests == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+        cache: "npm"
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install frontend deps
+      if: inputs.run-frontend-tests == 'true'
+      shell: bash
+      run: npm ci
+      working-directory: frontend
+
+    - name: Run frontend tests
+      if: inputs.run-frontend-tests == 'true'
+      shell: bash
+      run: npm test -- --runInBand
+      working-directory: frontend
+
+branding:
+  icon: "check-circle"
+  color: "green"
+
