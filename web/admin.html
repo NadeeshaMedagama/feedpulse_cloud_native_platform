@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeedPulse Admin Dashboard</title>
+    <link rel="stylesheet" href="/web/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>FeedPulse Admin</h1>
+        <p>Feedback intelligence dashboard</p>
+      </div>
+      <div class="top-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3c.5 0 .79.58.5 1A7 7 0 1 0 20 12.29c.42-.29 1 .01 1 .5z" fill="currentColor"/></svg>
+        </button>
+        <a class="button secondary" href="/">Back to Home</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card" id="loginCard">
+        <h2>Admin Login</h2>
+        <form id="loginForm" class="grid-two">
+          <label>Email
+            <input id="adminEmail" type="email" required />
+          </label>
+          <label>Password
+            <input id="adminPassword" type="password" required />
+          </label>
+          <button type="submit" class="button">Login</button>
+        </form>
+        <p id="loginMessage" class="message"></p>
+      </section>
+
+      <section id="dashboard" hidden>
+        <div class="stats-grid" id="stats"></div>
+
+        <section class="card">
+          <div class="toolbar">
+            <select id="filterCategory">
+              <option value="">All Categories</option>
+              <option>Bug</option>
+              <option>Feature Request</option>
+              <option>Improvement</option>
+              <option>Other</option>
+            </select>
+            <select id="filterStatus">
+              <option value="">All Statuses</option>
+              <option>New</option>
+              <option>In Review</option>
+              <option>Resolved</option>
+            </select>
+            <select id="sortBy">
+              <option value="date">Sort by Date</option>
+              <option value="priority">Sort by Priority</option>
+              <option value="sentiment">Sort by Sentiment</option>
+            </select>
+            <input id="search" placeholder="Search title or AI summary" />
+            <button id="refresh" class="button secondary">Refresh</button>
+            <button id="loadSummary" class="button secondary">7-day AI Summary</button>
+          </div>
+          <p id="summaryBox" class="summary-box"></p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Sentiment</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="feedbackBody"></tbody>
+            </table>
+          </div>
+          <div class="toolbar">
+            <button id="prevPage" class="button secondary">Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextPage" class="button secondary">Next</button>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/web/admin.js"></script>
+  </body>
+</html>
+
