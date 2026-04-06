@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeedPulse - Product Feedback Platform</title>
+    <link rel="stylesheet" href="/web/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>FeedPulse</h1>
+        <p>AI-powered product feedback platform</p>
+      </div>
+      <div class="top-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3c.5 0 .79.58.5 1A7 7 0 1 0 20 12.29c.42-.29 1 .01 1 .5z" fill="currentColor"/></svg>
+        </button>
+        <a class="button" href="/admin">Admin Login</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Submit Feedback</h2>
+        <p>Share product issues, requests, and ideas. AI will auto-analyze each submission.</p>
+        <form id="feedbackForm">
+          <label>Title
+            <input id="title" name="title" maxlength="120" required />
+          </label>
+
+          <label>Description
+            <textarea id="description" name="description" rows="6" minlength="20" required></textarea>
+            <small><span id="descCount">0</span> characters (minimum 20)</small>
+          </label>
+
+          <label>Category
+            <select id="category" name="category">
+              <option>Bug</option>
+              <option>Feature Request</option>
+              <option>Improvement</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <div class="grid-two">
+            <label>Name (optional)
+              <input id="name" name="name" />
+            </label>
+            <label>Email (optional)
+              <input id="email" name="email" type="email" />
+            </label>
+          </div>
+
+          <button type="submit" class="button">Submit Feedback</button>
+        </form>
+        <p id="formMessage" class="message"></p>
+      </section>
+    </main>
+
+    <script src="/web/app.js"></script>
+  </body>
+</html>
+
