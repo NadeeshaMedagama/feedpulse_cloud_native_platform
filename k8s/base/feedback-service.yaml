@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedback-service
+  namespace: feedpulse
+  labels:
+    app: feedback-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedback-service
+  template:
+    metadata:
+      labels:
+        app: feedback-service
+    spec:
+      containers:
+        - name: feedback-service
+          image: ghcr.io/your-org/feedpulse-feedback-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+          env:
+            - name: FEEDBACK_SERVICE_PORT
+              value: "8082"
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: feedpulse-secrets
+                  key: MONGO_URI
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: feedpulse-config
+                  key: MONGO_DATABASE
+            - name: AI_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: feedpulse-config
+                  key: AI_SERVICE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: feedpulse-secrets
+                  key: JWT_SECRET
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: feedpulse-secrets
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: feedpulse-secrets
+                  key: ADMIN_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 7
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 12
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedback-service
+  namespace: feedpulse
+spec:
+  selector:
+    app: feedback-service
+  ports:
+    - name: http
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
+
