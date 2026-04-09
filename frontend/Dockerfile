@@ -16,7 +16,6 @@ ENV PORT=3060
 ENV BACKEND_INTERNAL_URL=http://api-gateway:8080
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
 EXPOSE 3060
 CMD ["node", "server.js"]
 

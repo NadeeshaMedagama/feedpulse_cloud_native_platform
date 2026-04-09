@@ -53,6 +53,11 @@ jobs:
             echo "value=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Normalize GHCR owner
+        id: ghcr_owner
+        shell: bash
+        run: echo "value=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push GHCR image
         uses: docker/build-push-action@v6
         with:
@@ -60,6 +65,6 @@ jobs:
           file: ${{ matrix.dockerfile }}
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ steps.tag.outputs.value }}
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest
+            ghcr.io/${{ steps.ghcr_owner.outputs.value }}/${{ matrix.image }}:${{ steps.tag.outputs.value }}
+            ghcr.io/${{ steps.ghcr_owner.outputs.value }}/${{ matrix.image }}:latest
 
