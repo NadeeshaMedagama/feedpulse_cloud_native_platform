@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: feedpulse
+  labels:
+    app.kubernetes.io/name: feedpulse
+    app.kubernetes.io/part-of: feedpulse-platform
+
