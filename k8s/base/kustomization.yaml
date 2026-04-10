@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: feedpulse
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - auth-service.yaml
+  - ai-service.yaml
+  - feedback-service.yaml
+  - api-gateway.yaml
+  - ingress.yaml
+
