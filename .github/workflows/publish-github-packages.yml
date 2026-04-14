@@ -45,7 +45,7 @@ jobs:
           password: ${{ env.GHCR_PAT }}
 
       - name: Login to GHCR (GITHUB_TOKEN)
-        if: ${{ env.GHCR_PAT == '' }}
+        # if: ${{ env.GHCR_PAT == '' }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
