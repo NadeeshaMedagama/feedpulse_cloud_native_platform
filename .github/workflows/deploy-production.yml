@@ -25,7 +25,6 @@ jobs:
       url: ${{ vars.PRODUCTION_URL }}
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      KUBECONFIG: ${{ runner.temp }}/kubeconfig
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,6 +57,11 @@ jobs:
       - name: Install kubectl
         if: steps.tag.outputs.skip != 'true'
         uses: azure/setup-kubectl@v4
+
+      - name: Set kubeconfig path
+        if: steps.tag.outputs.skip != 'true'
+        shell: bash
+        run: echo "KUBECONFIG=$RUNNER_TEMP/kubeconfig" >> "$GITHUB_ENV"
 
       - name: Configure kubeconfig
         if: steps.tag.outputs.skip != 'true'
