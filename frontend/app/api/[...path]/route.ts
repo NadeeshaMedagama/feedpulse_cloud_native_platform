@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 const backendBaseURL = process.env.BACKEND_INTERNAL_URL || "http://api-gateway:8080";
 
-async function proxy(request: NextRequest, params: { path: string[] }) {
+type RouteParams = { path: string[] };
+type RouteContext = { params: RouteParams | Promise<RouteParams> };
+
+async function proxy(request: NextRequest, params: RouteParams) {
   const path = params.path.join("/");
   const search = request.nextUrl.search || "";
   const url = `${backendBaseURL}/api/${path}${search}`;
@@ -30,27 +33,33 @@ async function proxy(request: NextRequest, params: { path: string[] }) {
   });
 }
 
-export async function GET(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function GET(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
-export async function POST(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function POST(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
-export async function PATCH(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
-export async function DELETE(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
-export async function PUT(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function PUT(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
-export async function OPTIONS(request: NextRequest, context: { params: { path: string[] } }) {
-  return proxy(request, context.params);
+export async function OPTIONS(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  return proxy(request, params);
 }
 
