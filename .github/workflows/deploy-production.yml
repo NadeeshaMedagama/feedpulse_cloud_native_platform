@@ -56,7 +56,7 @@ jobs:
 
       - name: Install kubectl
         if: steps.tag.outputs.skip != 'true'
-        uses: azure/setup-kubectl@v4
+        uses: azure/setup-kubectl@v5
 
       - name: Set kubeconfig path
         if: steps.tag.outputs.skip != 'true'
