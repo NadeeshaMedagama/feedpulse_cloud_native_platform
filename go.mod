@@ -1,9 +1,9 @@
 module FeedPulse_Cloud_Native_Platform
 
-go 1.22
+go 1.23
 
 require (
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.3.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	go.mongodb.org/mongo-driver v1.17.9
 )
